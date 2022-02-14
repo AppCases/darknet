@@ -53,7 +53,7 @@ void optimize_picture(network *net, image orig, int max_layer, float scale, floa
     state.input = cuda_make_array(im.data, im.w*im.h*im.c);
     state.delta = cuda_make_array(im.data, im.w*im.h*im.c);
 
-    forward_network_gpu(*net, state);
+    forward_network_gpu(net, state);
     copy_ongpu(last.outputs, last.output_gpu, 1, last.delta_gpu, 1);
 
     cuda_pull_array(last.delta_gpu, last.delta, last.outputs);
@@ -143,7 +143,7 @@ void reconstruct_picture(network net, float *features, image recon, image update
         state.delta = cuda_make_array(delta.data, delta.w*delta.h*delta.c);
         state.truth = cuda_make_array(features, get_network_output_size(net));
 
-        forward_network_gpu(net, state);
+        forward_network_gpu(&net, state);
         backward_network_gpu(net, state);
 
         cuda_pull_array(state.delta, delta.data, delta.w*delta.h*delta.c);
