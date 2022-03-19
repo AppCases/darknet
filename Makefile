@@ -33,7 +33,7 @@ OS := $(shell uname)
 # ARCH= -gencode arch=compute_70,code=[sm_70,compute_70]
 
 # GeForce RTX 2080 Ti, RTX 2080, RTX 2070, Quadro RTX 8000, Quadro RTX 6000, Quadro RTX 5000, Tesla T4, XNOR Tensor Cores
-ARCH= -gencode arch=compute_75,code=[sm_75,compute_75]
+# ARCH= -gencode arch=compute_75,code=[sm_75,compute_75]
 
 # Jetson XAVIER
 # ARCH= -gencode arch=compute_72,code=[sm_72,compute_72]
@@ -51,7 +51,7 @@ ARCH= -gencode arch=compute_75,code=[sm_75,compute_75]
 # ARCH= -gencode arch=compute_62,code=[sm_62,compute_62]
 
 # For Tesla GA10x cards, RTX 3090, RTX 3080, RTX 3070, RTX A6000, RTX A40 uncomment:
-# ARCH= -gencode arch=compute_86,code=[sm_86,compute_86]
+ARCH= -gencode arch=compute_86,code=[sm_86,compute_86]
 
 
 VPATH=./src/
