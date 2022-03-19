@@ -107,6 +107,72 @@ void forward_network_gpu(network *net, network_state state)
         state.input = l.output_gpu;
         //cudaDeviceSynchronize();
 
+        if (i != 0 && i != 2 && i != 3 && i != 5 && i != 12 && i != 13 && i != 15 && i != 18 && i != 25 \
+        && i != 26 && i != 28 && i != 31 && i != 34 && i != 37 && i != 40 && i != 43 && i != 46 \
+        && i != 49 && i != 55 && i != 56 && i != 57 && i != 59 && i != 62 && i != 65 && i != 68 \
+        && i != 71 && i != 74 && i != 77 && i != 80 && i != 86 && i != 87 && i != 88 && i != 90 \
+        && i != 93 && i != 96 && i != 99 && i != 108 && i != 109 && i != 111 && i != 117 && i != 119 \
+        && i != 127 && i != 129 && i != 137 && i != 140 && i != 148 && i != 151 && i != 162)
+        cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
+
+        // if (net->layers[i-1].output_gpu) cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
+        if (i == 3) cuda_free(net->layers[1].output_gpu), net->layers[1].output_gpu=NULL;
+        if (i == 9) cuda_free(net->layers[2].output_gpu), net->layers[2].output_gpu=NULL;
+        if (i == 7) cuda_free(net->layers[4].output_gpu), net->layers[4].output_gpu=NULL;
+        if (i == 13) cuda_free(net->layers[11].output_gpu), net->layers[11].output_gpu=NULL;
+        if (i == 22) cuda_free(net->layers[12].output_gpu), net->layers[12].output_gpu=NULL;
+        if (i == 17) cuda_free(net->layers[14].output_gpu), net->layers[14].output_gpu=NULL;
+        if (i == 20) cuda_free(net->layers[17].output_gpu), net->layers[17].output_gpu=NULL;
+        if (i == 26) cuda_free(net->layers[24].output_gpu), net->layers[24].output_gpu=NULL;
+        if (i == 53) cuda_free(net->layers[25].output_gpu), net->layers[25].output_gpu=NULL;
+        if (i == 30) cuda_free(net->layers[27].output_gpu), net->layers[27].output_gpu=NULL;
+        if (i == 33) cuda_free(net->layers[30].output_gpu), net->layers[30].output_gpu=NULL;
+        if (i == 36) cuda_free(net->layers[33].output_gpu), net->layers[33].output_gpu=NULL;
+        if (i == 39) cuda_free(net->layers[36].output_gpu), net->layers[36].output_gpu=NULL;
+        if (i == 42) cuda_free(net->layers[39].output_gpu), net->layers[39].output_gpu=NULL;
+        if (i == 45) cuda_free(net->layers[42].output_gpu), net->layers[42].output_gpu=NULL;
+        if (i == 48) cuda_free(net->layers[45].output_gpu), net->layers[45].output_gpu=NULL;
+        if (i == 51) cuda_free(net->layers[48].output_gpu), net->layers[48].output_gpu=NULL;
+        if (i == 129) cuda_free(net->layers[54].output_gpu), net->layers[54].output_gpu=NULL;
+        if (i == 57) cuda_free(net->layers[55].output_gpu), net->layers[55].output_gpu=NULL;
+        if (i == 84) cuda_free(net->layers[56].output_gpu), net->layers[56].output_gpu=NULL;
+        if (i == 61) cuda_free(net->layers[58].output_gpu), net->layers[58].output_gpu=NULL;
+        if (i == 64) cuda_free(net->layers[61].output_gpu), net->layers[61].output_gpu=NULL;
+        if (i == 67) cuda_free(net->layers[64].output_gpu), net->layers[64].output_gpu=NULL;
+        if (i == 70) cuda_free(net->layers[67].output_gpu), net->layers[67].output_gpu=NULL;
+        if (i == 73) cuda_free(net->layers[70].output_gpu), net->layers[70].output_gpu=NULL;
+        if (i == 76) cuda_free(net->layers[73].output_gpu), net->layers[73].output_gpu=NULL;
+        if (i == 79) cuda_free(net->layers[76].output_gpu), net->layers[76].output_gpu=NULL;
+        if (i == 82) cuda_free(net->layers[79].output_gpu), net->layers[79].output_gpu=NULL;
+        if (i == 119) cuda_free(net->layers[85].output_gpu), net->layers[85].output_gpu=NULL;
+        if (i == 88) cuda_free(net->layers[86].output_gpu), net->layers[86].output_gpu=NULL;
+        if (i == 103) cuda_free(net->layers[87].output_gpu), net->layers[87].output_gpu=NULL;
+        if (i == 92) cuda_free(net->layers[89].output_gpu), net->layers[89].output_gpu=NULL;
+        if (i == 95) cuda_free(net->layers[92].output_gpu), net->layers[92].output_gpu=NULL;
+        if (i == 98) cuda_free(net->layers[95].output_gpu), net->layers[95].output_gpu=NULL;
+        if (i == 101) cuda_free(net->layers[98].output_gpu), net->layers[98].output_gpu=NULL;
+        if (i == 113) cuda_free(net->layers[107].output_gpu), net->layers[107].output_gpu=NULL;
+        if (i == 113) cuda_free(net->layers[108].output_gpu), net->layers[108].output_gpu=NULL;
+        if (i == 113) cuda_free(net->layers[110].output_gpu), net->layers[110].output_gpu=NULL;
+        if (i == 153) cuda_free(net->layers[116].output_gpu), net->layers[116].output_gpu=NULL;
+        if (i == 121) cuda_free(net->layers[118].output_gpu), net->layers[118].output_gpu=NULL;
+        if (i == 142) cuda_free(net->layers[126].output_gpu), net->layers[126].output_gpu=NULL;
+        if (i == 131) cuda_free(net->layers[128].output_gpu), net->layers[128].output_gpu=NULL;
+        if (i == 140) cuda_free(net->layers[136].output_gpu), net->layers[136].output_gpu=NULL;
+        if (i == 139) ; // yolo layer
+        if (i == 151) cuda_free(net->layers[147].output_gpu), net->layers[147].output_gpu=NULL;
+        if (i == 150) ; // yolo layer
+        if (i == 161) ; // yolo layer
+
+        if (l.weights_gpu) {
+            cuda_free(l.weights_gpu);
+            net->layers[i].weights_gpu = NULL;
+        }
+        if (l.biases_gpu) {
+            cuda_free(l.biases_gpu);
+            net->layers[i].biases_gpu=NULL;
+        }
+
         /*
         cuda_pull_array(l.output_gpu, l.output, l.outputs);
         cudaStreamSynchronize(get_cuda_stream());
