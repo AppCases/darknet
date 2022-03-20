@@ -88,7 +88,8 @@ void forward_network_gpu(network *net, network_state state)
             layers_delta_gpu[0] = net->layers[net->layers[i].index].delta_gpu;
             net->layers[i].layers_delta_gpu = (float**)cuda_make_array_pointers((void**)layers_delta_gpu, net->layers[i].n);
         }
-        if (net->layers[i].type == ROUTE || net->layers[i].type == UPSAMPLE || net->layers[i].type == YOLO) {
+        // if (net->layers[i].type == ROUTE || net->layers[i].type == UPSAMPLE || net->layers[i].type == YOLO) {
+            if (net->layers[i].type == UPSAMPLE || net->layers[i].type == YOLO) {
             // net->layers[i].weights_gpu = cuda_make_array(net->layers[i].weights, net->layers[i].nweights); 
             // net->layers[i].biases_gpu = cuda_make_array(net->layers[i].biases, net->layers[i].n);
             net->layers[i].delta_gpu =  cuda_make_array(net->layers[i].delta, net->layers[i].output_size);
