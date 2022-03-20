@@ -216,6 +216,7 @@ typedef struct update_args {
 
 // layer.h
 struct layer {
+    int output_size;
     LAYER_TYPE type;
     ACTIVATION activation;
     ACTIVATION lstm_activation;

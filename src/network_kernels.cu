@@ -75,6 +75,34 @@ void forward_network_gpu(network *net, network_state state)
     int i;
     for(i = 0; i < net->n; ++i){
         state.index = i;
+
+        net->layers[i].output_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
+        if (net->layers[i].type == SHORTCUT) {
+            net->layers[i].input_sizes_gpu = cuda_make_int_array_new_api(net->layers[i].input_sizes, net->layers[i].n);
+
+            float **layers_output_gpu = (float **)calloc(net->layers[i].n, sizeof(float *)); // net->layers[i].n = 1, in yolov4
+            layers_output_gpu[0] = net->layers[net->layers[i].index].output_gpu;
+            net->layers[i].layers_output_gpu = (float**)cuda_make_array_pointers((void**)layers_output_gpu, net->layers[i].n);
+            
+            float **layers_delta_gpu = (float **)calloc(net->layers[i].n, sizeof(float *)); // net->layers[i].n = 1, in yolov4
+            layers_delta_gpu[0] = net->layers[net->layers[i].index].delta_gpu;
+            net->layers[i].layers_delta_gpu = (float**)cuda_make_array_pointers((void**)layers_delta_gpu, net->layers[i].n);
+        }
+        if (net->layers[i].type == ROUTE || net->layers[i].type == UPSAMPLE || net->layers[i].type == YOLO) {
+            // net->layers[i].weights_gpu = cuda_make_array(net->layers[i].weights, net->layers[i].nweights); 
+            // net->layers[i].biases_gpu = cuda_make_array(net->layers[i].biases, net->layers[i].n);
+            net->layers[i].delta_gpu =  cuda_make_array(net->layers[i].delta, net->layers[i].output_size);
+        }
+        if (net->layers[i].type == YOLO) {
+            net->layers[i].output_avg_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
+        }
+        if (net->layers[i].type == CONVOLUTIONAL) {
+            net->layers[i].weights_gpu = cuda_make_array(net->layers[i].weights, net->layers[i].nweights); 
+            net->layers[i].biases_gpu = cuda_make_array(net->layers[i].biases, net->layers[i].n);
+            cuda_push_array(net->layers[i].weights_gpu, net->layers[i].weights, net->layers[i].nweights);
+            cuda_push_array(net->layers[i].biases_gpu, net->layers[i].biases, net->layers[i].n);
+        }
+
         layer l = net->layers[i];
         if(l.delta_gpu && state.train){
             fill_ongpu(l.outputs * l.batch, 0, l.delta_gpu, 1);

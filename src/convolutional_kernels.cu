@@ -1238,12 +1238,12 @@ void pull_convolutional_layer(convolutional_layer l)
 
 void push_convolutional_layer(convolutional_layer l)
 {
-    cuda_push_array(l.weights_gpu, l.weights, l.nweights);
+    // cuda_push_array(l.weights_gpu, l.weights, l.nweights);
 #ifdef CUDNN_HALF
     assert(l.nweights > 0);
     cuda_convert_f32_to_f16(l.weights_gpu, l.nweights, l.weights_gpu16);
 #endif
-    cuda_push_array(l.biases_gpu, l.biases, l.n);
+    // cuda_push_array(l.biases_gpu, l.biases, l.n);
     if (l.train) {
         cuda_push_array(l.weight_updates_gpu, l.weight_updates, l.nweights);
         cuda_push_array(l.bias_updates_gpu, l.bias_updates, l.n);
