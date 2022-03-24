@@ -75,8 +75,22 @@ void forward_network_gpu(network *net, network_state state)
     int i;
     for(i = 0; i < net->n; ++i){
         state.index = i;
-
-        net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        if (i != 137 && i != 6 && i != 8 && i != 10) {
+            net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        } else if(i == 137) {
+            net->layers[137].output_gpu = net->layers[133].output_gpu;
+        } else if (i == 6) {
+            net->layers[6].output_gpu = net->layers[3].output_gpu;
+            // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        } else if (i == 8) {
+            net->layers[8].output_gpu = net->layers[3].output_gpu;
+            // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        } else if (i == 10) {
+            net->layers[10].output_gpu = net->layers[3].output_gpu;
+            // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        }
+        // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
         // net->layers[i].output_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
         if (net->layers[i].type == SHORTCUT) {
             net->layers[i].input_sizes_gpu = cuda_make_int_array_new_api(net->layers[i].input_sizes, net->layers[i].n);
@@ -142,14 +156,28 @@ void forward_network_gpu(network *net, network_state state)
         && i != 49 && i != 55 && i != 56 && i != 57 && i != 59 && i != 62 && i != 65 && i != 68 \
         && i != 71 && i != 74 && i != 77 && i != 80 && i != 86 && i != 87 && i != 88 && i != 90 \
         && i != 93 && i != 96 && i != 99 && i != 108 && i != 109 && i != 111 && i != 117 && i != 119 \
-        && i != 127 && i != 129 && i != 137 && i != 140 && i != 148 && i != 151 && i != 162) {
+        && i != 127 && i != 129 && i != 137 && i != 140 && i != 148 && i != 151 && i != 162 \
+        && i != 134 && i != 4 && i != 7 && i != 9 && i != 11) {
             if (net->layers[i-1].output_gpu) cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
             // cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
+        }
+        // if (i == 137) cuda_free(net->layers[134].output_gpu), net->layers[134].output_gpu=NULL;
+        if (i == 138) {
+            cuda_free(net->layers[137].output_gpu);
+            net->layers[137].output_gpu=NULL;
+            net->layers[133].output_gpu=NULL;
+        }
+        if (i == 11) {
+            cuda_free(net->layers[10].output_gpu);
+            net->layers[3].output_gpu=NULL;
+            net->layers[6].output_gpu = NULL;
+            net->layers[8].output_gpu = NULL;
+            net->layers[10].output_gpu = NULL;
         }
         if (i == 3) cuda_free(net->layers[1].output_gpu), net->layers[1].output_gpu=NULL;
         if (i == 9) cuda_free(net->layers[2].output_gpu), net->layers[2].output_gpu=NULL;
         if (i == 7) cuda_free(net->layers[4].output_gpu), net->layers[4].output_gpu=NULL;
-        if (i == 13) cuda_free(net->layers[11].output_gpu), net->layers[11].output_gpu=NULL;
+        // if (i == 13) cuda_free(net->layers[11].output_gpu), net->layers[11].output_gpu=NULL;
         if (i == 22) cuda_free(net->layers[12].output_gpu), net->layers[12].output_gpu=NULL;
         if (i == 17) cuda_free(net->layers[14].output_gpu), net->layers[14].output_gpu=NULL;
         if (i == 20) cuda_free(net->layers[17].output_gpu), net->layers[17].output_gpu=NULL;
