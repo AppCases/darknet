@@ -76,7 +76,8 @@ void forward_network_gpu(network *net, network_state state)
     for(i = 0; i < net->n; ++i){
         state.index = i;
 
-        net->layers[i].output_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
+        net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        // net->layers[i].output_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
         if (net->layers[i].type == SHORTCUT) {
             net->layers[i].input_sizes_gpu = cuda_make_int_array_new_api(net->layers[i].input_sizes, net->layers[i].n);
 
