@@ -64,3 +64,8 @@ uselib
 uselib_track
 darknet
 vcpkg/
+
+profiling/
+gvprof*
+darknet.hpcstruct
+predictions.jpg

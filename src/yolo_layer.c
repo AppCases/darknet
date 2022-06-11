@@ -60,9 +60,10 @@ layer make_yolo_layer(int batch, int w, int h, int n, int total, int *mask, int 
 #ifdef GPU
     l.forward_gpu = forward_yolo_layer_gpu;
     l.backward_gpu = backward_yolo_layer_gpu;
-    l.output_gpu = cuda_make_array(l.output, batch*l.outputs);
-    l.output_avg_gpu = cuda_make_array(l.output, batch*l.outputs);
-    l.delta_gpu = cuda_make_array(l.delta, batch*l.outputs);
+    l.output_size = batch*l.outputs;
+    // l.output_gpu = cuda_make_array(l.output, batch*l.outputs);   // memory_alloc 881
+    // l.output_avg_gpu = cuda_make_array(l.output, batch*l.outputs);  // memory_alloc 935
+    // l.delta_gpu = cuda_make_array(l.delta, batch*l.outputs);        // memory_alloc 989
 
     free(l.output);
     if (cudaSuccess == cudaHostAlloc(&l.output, batch*l.outputs*sizeof(float), cudaHostRegisterMapped)) l.output_pinned = 1;

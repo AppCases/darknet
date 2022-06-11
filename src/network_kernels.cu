@@ -75,6 +75,50 @@ void forward_network_gpu(network *net, network_state state)
     int i;
     for(i = 0; i < net->n; ++i){
         state.index = i;
+        if (i != 137 && i != 6 && i != 8 && i != 10) {
+            net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        } else if(i == 137) {
+            net->layers[137].output_gpu = net->layers[133].output_gpu;
+        } else if (i == 6) {
+            net->layers[6].output_gpu = net->layers[3].output_gpu;
+            // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        } else if (i == 8) {
+            net->layers[8].output_gpu = net->layers[3].output_gpu;
+            // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        } else if (i == 10) {
+            net->layers[10].output_gpu = net->layers[3].output_gpu;
+            // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        }
+        // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        // net->layers[i].output_gpu = cuda_make_raw_array(net->layers[i].output_size);
+        // net->layers[i].output_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
+        if (net->layers[i].type == SHORTCUT) {
+            net->layers[i].input_sizes_gpu = cuda_make_int_array_new_api(net->layers[i].input_sizes, net->layers[i].n);
+
+            float **layers_output_gpu = (float **)calloc(net->layers[i].n, sizeof(float *)); // net->layers[i].n = 1, in yolov4
+            layers_output_gpu[0] = net->layers[net->layers[i].index].output_gpu;
+            net->layers[i].layers_output_gpu = (float**)cuda_make_array_pointers((void**)layers_output_gpu, net->layers[i].n);
+            
+            float **layers_delta_gpu = (float **)calloc(net->layers[i].n, sizeof(float *)); // net->layers[i].n = 1, in yolov4
+            layers_delta_gpu[0] = net->layers[net->layers[i].index].delta_gpu;
+            net->layers[i].layers_delta_gpu = (float**)cuda_make_array_pointers((void**)layers_delta_gpu, net->layers[i].n);
+        }
+        // if (net->layers[i].type == ROUTE || net->layers[i].type == UPSAMPLE || net->layers[i].type == YOLO) {
+            if (net->layers[i].type == UPSAMPLE || net->layers[i].type == YOLO) {
+            // net->layers[i].weights_gpu = cuda_make_array(net->layers[i].weights, net->layers[i].nweights); 
+            // net->layers[i].biases_gpu = cuda_make_array(net->layers[i].biases, net->layers[i].n);
+            net->layers[i].delta_gpu =  cuda_make_array(net->layers[i].delta, net->layers[i].output_size);
+        }
+        if (net->layers[i].type == YOLO) {
+            net->layers[i].output_avg_gpu = cuda_make_array(net->layers[i].output, net->layers[i].output_size);
+        }
+        if (net->layers[i].type == CONVOLUTIONAL) {
+            net->layers[i].weights_gpu = cuda_make_array(net->layers[i].weights, net->layers[i].nweights); 
+            net->layers[i].biases_gpu = cuda_make_array(net->layers[i].biases, net->layers[i].n);
+            cuda_push_array(net->layers[i].weights_gpu, net->layers[i].weights, net->layers[i].nweights);
+            cuda_push_array(net->layers[i].biases_gpu, net->layers[i].biases, net->layers[i].n);
+        }
+
         layer l = net->layers[i];
         if(l.delta_gpu && state.train){
             fill_ongpu(l.outputs * l.batch, 0, l.delta_gpu, 1);
@@ -112,10 +156,24 @@ void forward_network_gpu(network *net, network_state state)
         && i != 49 && i != 55 && i != 56 && i != 57 && i != 59 && i != 62 && i != 65 && i != 68 \
         && i != 71 && i != 74 && i != 77 && i != 80 && i != 86 && i != 87 && i != 88 && i != 90 \
         && i != 93 && i != 96 && i != 99 && i != 108 && i != 109 && i != 111 && i != 117 && i != 119 \
-        && i != 127 && i != 129 && i != 137 && i != 140 && i != 148 && i != 151 && i != 162)
-        cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
-
-        // if (net->layers[i-1].output_gpu) cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
+        && i != 127 && i != 129 && i != 137 && i != 140 && i != 148 && i != 151 && i != 162 \
+        && i != 134 && i != 4 && i != 7 && i != 9 && i != 11) {
+            if (net->layers[i-1].output_gpu) cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
+            // cuda_free(net->layers[i-1].output_gpu), net->layers[i-1].output_gpu=NULL;
+        }
+        // if (i == 137) cuda_free(net->layers[134].output_gpu), net->layers[134].output_gpu=NULL;
+        if (i == 138) {
+            cuda_free(net->layers[137].output_gpu);
+            net->layers[137].output_gpu=NULL;
+            net->layers[133].output_gpu=NULL;
+        }
+        if (i == 11) {
+            cuda_free(net->layers[10].output_gpu);
+            net->layers[3].output_gpu=NULL;
+            net->layers[6].output_gpu = NULL;
+            net->layers[8].output_gpu = NULL;
+            net->layers[10].output_gpu = NULL;
+        }
         if (i == 3) cuda_free(net->layers[1].output_gpu), net->layers[1].output_gpu=NULL;
         if (i == 9) cuda_free(net->layers[2].output_gpu), net->layers[2].output_gpu=NULL;
         if (i == 7) cuda_free(net->layers[4].output_gpu), net->layers[4].output_gpu=NULL;

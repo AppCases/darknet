@@ -136,7 +136,8 @@ maxpool_layer make_maxpool_layer(int batch, int h, int w, int c, int size, int s
         if (!avgpool) l.indexes_gpu = cuda_make_int_array(output_size);
         l.delta_gpu = cuda_make_array(l.delta, output_size);
     }
-    l.output_gpu  = cuda_make_array(l.output, output_size);
+    l.output_size = output_size;
+    // l.output_gpu  = cuda_make_array(l.output, output_size);  // memory_alloc 711
     create_maxpool_cudnn_tensors(&l);
     if (avgpool) cudnn_local_avgpool_setup(&l);
     else cudnn_maxpool_setup(&l);
