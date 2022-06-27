@@ -115,8 +115,8 @@ void forward_network_gpu(network *net, network_state state)
         if (net->layers[i].type == CONVOLUTIONAL) {
             net->layers[i].weights_gpu = cuda_make_array(net->layers[i].weights, net->layers[i].nweights); 
             net->layers[i].biases_gpu = cuda_make_array(net->layers[i].biases, net->layers[i].n);
-            cuda_push_array(net->layers[i].weights_gpu, net->layers[i].weights, net->layers[i].nweights);
-            cuda_push_array(net->layers[i].biases_gpu, net->layers[i].biases, net->layers[i].n);
+            // cuda_push_array(net->layers[i].weights_gpu, net->layers[i].weights, net->layers[i].nweights);
+            // cuda_push_array(net->layers[i].biases_gpu, net->layers[i].biases, net->layers[i].n);
         }
 
         layer l = net->layers[i];
